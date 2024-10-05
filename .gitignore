@@ -1,0 +1,8 @@
+# Ignorar la carpeta node_modules
+node_modules/
+
+# Ignorar los archivos de log
+*.log
+
+# Ignorar los archivos de configuración de entornos específicos
+.env
