@@ -1,14 +1,16 @@
-#Inicio de la aplicación
-1. Clonar el repositorio
-2. Ejecutar npm install para instalar dependencias
-3. Ejecutar npm run dev para iniciar el servidor mediante nodemon
+# Inicio de la Aplicación
 
-#Datos de la Aplicación
-La configuración general de la aplicación es encuentra en src/app.js.
+## Clonar el Repositorio
+1. Clona el repositorio.
+2. Ejecuta `npm install` para instalar las dependencias.
+3. Ejecuta `npm run dev` para iniciar el servidor mediante Nodemon.
 
-#Estructura de Documentos
-Controllers -> Controladores con la lógica de negocios y la renderizacion de vistas
-Models -> Modelos de Datos utilizados por la aplicacion
-Routes -> Contiene el manejo de las rutas del proyecto
-Utils -> Implementa el desarrollo de funciones auxiliares
-Views -> Desarrolla las vistas y plantillas del proyecto mediante PUG
+## Datos de la Aplicación
+La configuración general de la aplicación se encuentra en `src/app.js`.
+
+## Estructura de Documentos
+- **Controllers**: Controladores que contienen la lógica de negocios y la renderización de vistas.
+- **Models**: Modelos de datos utilizados por la aplicación.
+- **Routes**: Manejo de las rutas del proyecto.
+- **Utils**: Implementación de funciones auxiliares.
+- **Views**: Desarrollo de vistas y plantillas del proyecto mediante PUG.
