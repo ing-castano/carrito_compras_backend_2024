@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "nombre": "Producto A",
+      "categoria": "Electrónica",
+      "precio": 500,
+      "stock": 10
+    },
+    {
+      "id": 2,
+      "nombre": "Producto B",
+      "categoria": "Hogar",
+      "precio": 150,
+      "stock": 25
+    }
+  ]
+  

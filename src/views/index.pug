@@ -4,3 +4,25 @@ html
         title Carrito de Compras
     body
         h1 Bienvenido al Sistema de Carrito de Compras
+
+        form(action="/productos", method="GET")
+            label(for="categoria") Categoría:
+            select(name="categoria", id="categoria")
+                option(value="") Selecciona una categoría
+                option(value="Electrónica") Electrónica
+                option(value="Ropa") Ropa
+                option(value="Alimentos") Alimentos
+            label(for="minPrecio") Precio Mínimo:
+            input(type="number", name="minPrecio", id="minPrecio")
+            label(for="maxPrecio") Precio Máximo:
+            input(type="number", name="maxPrecio", id="maxPrecio")
+            button(type="submit") Filtrar
+
+        //- Lista de productos
+        if productos && productos.length
+            h2 Catálogo de Productos
+            ul
+                each producto in productos
+                    li= producto.nombre + ' - $' + producto.precio
+        else
+            h2 No hay productos disponibles en este momento.
