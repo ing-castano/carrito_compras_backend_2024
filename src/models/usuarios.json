@@ -2,13 +2,7 @@
   {
     "id": 1,
     "username": "admin",
-    "password": "$2b$10$K0t1DnWJ1FAy7rcj1BP/6e8rTIzJ5j/DEsMp72xPmflGnJtX8pHXS",
+    "password": "$2b$10$37xgOX3LZ8Rb1x7GjTO1DeV7MuTDYeJx2sLDmPzCaB3D7woHuwxcG",
     "email": "martin@mail.com"
-  },
-  {
-    "id": 2,
-    "username": "user2",
-    "email": "user2@example.com",
-    "password": "hashedpassword2"
   }
 ]

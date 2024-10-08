@@ -1,4 +1,5 @@
 // Archivo principal del proyecto
+require('dotenv').config(); // Cargar las variables de entorno
 const express = require('express')
 const app = express()
 const indexRoutes = require('./routes/index.js')
