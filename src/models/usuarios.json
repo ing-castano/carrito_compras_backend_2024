@@ -2,7 +2,7 @@
   {
     "id": 1,
     "username": "admin",
-    "password": "pass",
+    "password": "$2b$10$K0t1DnWJ1FAy7rcj1BP/6e8rTIzJ5j/DEsMp72xPmflGnJtX8pHXS",
     "email": "martin@mail.com"
   },
   {
