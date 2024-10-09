@@ -20,7 +20,6 @@ const obtenerTodos = async () => {
 // Función para verificar usuario
 const verificarUsuario = async (usuario) => {
   const users = await obtenerTodos() // Asegúrate de usar await aquí
-  console.log(users)
 
   // Encuentra al usuario con el nombre de usuario correspondiente
   const userEncontrado = users.find(
@@ -36,7 +35,7 @@ const verificarUsuario = async (usuario) => {
     usuario.password,
     userEncontrado.password
   )
-  
+
   if (esValida) {
     return userEncontrado.id // Retorna el ID si la contraseña es correcta
   } else {
