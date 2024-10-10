@@ -1,7 +1,7 @@
-// usuariosRoutes.js
 const express = require('express')
 const router = express.Router()
 const { verificarUsuario } = require('../controllers/usuarioController')
+const { firmarToken } = require('../middlewares/authMiddleware')
 const jwt = require('jsonwebtoken')
 
 // Ruta para renderizar la vista de la página principal
@@ -12,19 +12,19 @@ router.get('/', (req, res, next) => {
   res.render('login')
 })
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   const { username, password } = req.body
   const usuarioId = await verificarUsuario({ username, password })
 
   if (usuarioId != null) {
-    // Generar un token JWT
-    const token = jwt.sign({ id: usuarioId }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+    req.usuarioId = usuarioId
+    firmarToken(req, res, () => {
+      return res.status(200).redirect('/') // Redirigir a la página principal despues de firmar el token
     })
-    res.cookie('token', token) // Configura la cookie
-    return res.status(200).redirect('/') // Redirigir a la página principal
   } else {
-    res.status(401).json({ message: 'Credenciales incorrectas' })
+    const error = new Error('Credenciales incorrectas')
+    error.status = 401 // Establece el estado
+    next(error) // Pasa el error al siguiente middleware de manejo de errores
   }
 })
 

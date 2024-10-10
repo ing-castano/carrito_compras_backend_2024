@@ -25,7 +25,6 @@ const verificarUsuario = async (usuario) => {
   const userEncontrado = users.find(
     (user) => user.username === usuario.username
   )
-  console.log(userEncontrado)
   if (!userEncontrado) {
     return null // Usuario no encontrado
   }
@@ -43,6 +42,46 @@ const verificarUsuario = async (usuario) => {
   }
 }
 
+const registrarUsuario = async ({ username, password, mail }) => {
+  // Verificar que usario no exista
+  const users = await obtenerTodos()
+  // Encuentra al usuario con el nombre de usuario correspondiente
+  const userEncontrado = users.find((user) => user.username === username)
+  if (userEncontrado) {
+    const error = new Error('Usuario ya registrado')
+    error.status = 400
+    throw error
+  }
+
+  // Encriptar la contraseña antes de guardar
+  const hashedPassword = await bcrypt.hash(password, 10)
+
+  // Generar nuevo id
+  const id =
+    users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1
+
+  // Crear nuevo usuario
+  const nuevoUsuario = { id, username, password: hashedPassword, mail }
+
+  // Agregar el nuevo usuario a la lista de usuarios
+  users.push(nuevoUsuario)
+
+  // Escribir el nuevo arreglo de usuarios en el archivo JSON
+  try {
+    await fs.promises.writeFile(
+      path.join(__dirname, '../models/usuarios.json'),
+      JSON.stringify(users, null, 2), // Convertir a JSON con formato legible
+      'utf-8'
+    )
+    return nuevoUsuario // Retorna el nuevo usuario registrado
+  } catch (err) {
+    const error = new Error('Error al escribir en la base de datos')
+    error.status = 500
+    throw error
+  }
+}
+
 module.exports = {
   verificarUsuario,
+  registrarUsuario,
 }

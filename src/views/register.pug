@@ -1,13 +1,15 @@
 doctype html
 html
     head
-        title Carrito de Compras - Login
+        title Carrito de Compras - Registro
     body
-        h1 Login 
+        h1 Registro de Nuevo Usuario
 
-        form(action="/login", method="POST")
+        form(action="/register", method="POST")
             label(for="username") Usuario:
             input(type="text", name="username", id="username")
+            label(for="mail") Correo:
+            input(type="mail", name="mail", id="mail")
             label(for="password") Contraseña:
             input(type="password", name="password", id="password")
             button(type="submit") Ingresar

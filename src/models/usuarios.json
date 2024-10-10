@@ -4,5 +4,29 @@
     "username": "admin",
     "password": "$2b$10$37xgOX3LZ8Rb1x7GjTO1DeV7MuTDYeJx2sLDmPzCaB3D7woHuwxcG",
     "email": "martin@mail.com"
+  },
+  {
+    "id": 2,
+    "username": "userTest",
+    "password": "$2b$10$UK95C.6E.mUcUdSJ0xrK7OjueLhiuRonHiGbkPKctUed.CVV5VDeG",
+    "mail": "mailTest@mail.com"
+  },
+  {
+    "id": 3,
+    "username": "martin",
+    "password": "$2b$10$za60dMIsaBilXimZhY1wUuZcEmeI2s5XJzC3T6dVgoVI9DOp3fJTe",
+    "mail": "martin1"
+  },
+  {
+    "id": 4,
+    "username": "martin1",
+    "password": "$2b$10$VWMDjmjf3dP4qRvzBViOrulr1QzQE58HW65rLwUFSvf1cwg8mh24O",
+    "mail": "martin1"
+  },
+  {
+    "id": 5,
+    "username": "martin2",
+    "password": "$2b$10$L9wmRfL4MI0AR5/uusE6fOa6m2GI0elws.sHWdadvqT/4W8czkBze",
+    "mail": "martin2"
   }
 ]
