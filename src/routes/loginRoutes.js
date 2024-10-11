@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { verificarUsuario } = require('../controllers/usuarioController')
-const { firmarToken } = require('../middlewares/authMiddleware')
+const { firmarToken, verificarToken } = require('../middlewares/authMiddleware')
 const jwt = require('jsonwebtoken')
 
 // Ruta para renderizar la vista de la página principal

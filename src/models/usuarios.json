@@ -28,5 +28,11 @@
     "username": "martin2",
     "password": "$2b$10$L9wmRfL4MI0AR5/uusE6fOa6m2GI0elws.sHWdadvqT/4W8czkBze",
     "mail": "martin2"
+  },
+  {
+    "id": 6,
+    "username": "test2",
+    "password": "$2b$10$WVN4VxTzPxCmdPoo33q.I.4.xSKCxukzfEYej5KGZQRdReZk1WIBq",
+    "mail": "tes2@gmail.com"
   }
 ]
