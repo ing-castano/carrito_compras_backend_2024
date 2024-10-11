@@ -2,27 +2,52 @@ doctype html
 html
     head
         title Carrito de Compras
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
     body
-        h1 Bienvenido al Sistema de Carrito de Compras
+        nav
+            div.nav-wrapper.blue
+                a(href="#", class="brand-logo center") Carrito de Compras
+                ul.right
+                    li
+                        a(href="/logout", class="waves-effect waves-light btn red") Cerrar Sesión
 
-        form(action="/productos", method="GET")
-            label(for="categoria") Categoría:
-            select(name="categoria", id="categoria")
-                option(value="") Selecciona una categoría
-                option(value="Electrónica") Electrónica
-                option(value="Ropa") Ropa
-                option(value="Alimentos") Alimentos
-            label(for="minPrecio") Precio Mínimo:
-            input(type="number", name="minPrecio", id="minPrecio")
-            label(for="maxPrecio") Precio Máximo:
-            input(type="number", name="maxPrecio", id="maxPrecio")
-            button(type="submit") Filtrar
+        div.container
+            h1.center-align Bienvenido al Sistema de Carrito de Compras
 
-        //- Lista de productos
-        if productos && productos.length
-            h2 Catálogo de Productos
-            ul
-                each producto in productos
-                    li= producto.nombre + ' - $' + producto.precio
-        else
-            h2 No hay productos disponibles en este momento.
+            form(action="/productos", method="GET", class="col s12")
+                div.row
+                    div.input-field.col.s6
+                        select(name="categoria", id="categoria")
+                            option(value="") Selecciona una categoría
+                            option(value="Electrónica") Electrónica
+                            option(value="Ropa") Ropa
+                            option(value="Alimentos") Alimentos
+                        label(for="categoria") Categoría:
+                    
+                    div.input-field.col.s6
+                        input(type="number", name="minPrecio", id="minPrecio")
+                        label(for="minPrecio") Precio Mínimo:
+                    
+                    div.input-field.col.s6
+                        input(type="number", name="maxPrecio", id="maxPrecio")
+                        label(for="maxPrecio") Precio Máximo:
+
+                div.row
+                    button(type="submit", class="btn waves-effect waves-light blue") Filtrar
+
+            //- Lista de productos
+            if productos && productos.length
+                h2 Catálogo de Productos
+                ul.collection
+                    each producto in productos
+                        li.collection-item= producto.nombre + ' - $' + producto.precio
+            else
+                h2.center-align No hay productos disponibles en este momento.
+
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
+        script.
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('select');
+                M.FormSelect.init(elems);
+            });

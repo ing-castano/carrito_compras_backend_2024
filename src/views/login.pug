@@ -2,12 +2,61 @@ doctype html
 html
     head
         title Carrito de Compras - Login
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css")
+        style.
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f4f4f4;
+            }
+            h1 {
+                margin: 2rem;
+            }
+            form {
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                width: 300px;
+            }
+            button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 10px;
+                cursor: pointer;
+                width: 100%; /* Hacer que el botón ocupe todo el ancho del formulario */
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            .register-link {
+                display: block;
+                text-align: center;
+                margin-top: 15px; /* Espaciado entre el botón de ingresar y el enlace de registro */
+            }
+
     body
-        h1 Login 
+        h1 Login
 
         form(action="/login", method="POST")
-            label(for="username") Usuario:
-            input(type="text", name="username", id="username")
-            label(for="password") Contraseña:
-            input(type="password", name="password", id="password")
-            button(type="submit") Ingresar
+            div
+                label(for="username") Usuario:
+                input(type="text", name="username", id="username", required)
+            div
+                label(for="password") Contraseña:
+                input(type="password", name="password", id="password", required)
+            div
+                button(type="submit") Ingresar
+            
+            a.register-link(href="/register") Registrar aquí  <!-- Enlace al registro -->
+
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
+        script.
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('select');
+                M.FormSelect.init(elems);
+            });

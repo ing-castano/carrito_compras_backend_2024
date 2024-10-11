@@ -2,14 +2,64 @@ doctype html
 html
     head
         title Carrito de Compras - Registro
-    body
-        h1 Registro de Nuevo Usuario
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css")
+        style.
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f4f4f4;
+                margin: 0; /* Eliminar márgenes por defecto */
+            }
+            h1 {
+                margin: 0; /* Remover el margen superior e inferior para centrar mejor */
+                padding-bottom: 20px; /* Espacio entre el título y el formulario */
+                text-align: center; /* Centrar el texto del título */
+            }
+            form {
+                background-color: white;
+                margin: 0 auto;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                width: 100%; /* Asegurarse de que el formulario ocupe todo el ancho */
+                max-width: 400px; /* Ancho máximo del formulario */
+            }
+            button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 10px;
+                cursor: pointer;
+                width: 100%; /* Botón ocupa todo el ancho del formulario */
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
 
-        form(action="/register", method="POST")
-            label(for="username") Usuario:
-            input(type="text", name="username", id="username")
-            label(for="mail") Correo:
-            input(type="mail", name="mail", id="mail")
-            label(for="password") Contraseña:
-            input(type="password", name="password", id="password")
-            button(type="submit") Ingresar
+    body
+        div.container
+            h1.center-align Registro de Nuevo Usuario 
+
+        div.container
+            form(action="/register", method="POST")
+                div.input-field
+                    input(type="text", name="username", id="username", required)
+                    label(for="username") Usuario
+                div.input-field
+                    input(type="email", name="mail", id="mail", required)
+                    label(for="mail") Correo
+                div.input-field
+                    input(type="password", name="password", id="password", required)
+                    label(for="password") Contraseña
+                button(type="submit") Registrar
+
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
+        script.
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('select');
+                M.FormSelect.init(elems);
+            });
