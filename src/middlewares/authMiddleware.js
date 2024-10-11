@@ -2,21 +2,35 @@ const jwt = require('jsonwebtoken')
 
 const verificarToken = (req, res, next) => {
   const token = req.cookies?.token
-
-  if (!token) {
-    return next() // Si no hay token, continuar
-  }
-
+  // Verificar el token
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.redirect('/login') // Redirigir si el token es inválido
+    if (!err) {
+      // Si el token es válido, almacenar el ID del usuario y continuar al siguiente middleware
+      req.usuarioId = decoded.id
     }
-
-    req.usuarioId = decoded.id // Almacenar el ID del usuario en la solicitud
-    next() // Continuar al siguiente middleware
   })
+  next()
+}
+
+const protegerRutasPrivadas = (req, res, next) => {
+  const token = req.cookies?.token
+  if (!token) {
+    return res.render('login')
+  }
+  next()
+}
+
+const firmarToken = (req, res, next) => {
+  // Generar un token JWT
+  const token = jwt.sign({ id: req.usuarioId }, process.env.JWT_SECRET, {
+    expiresIn: '1h', // Duración del token
+  })
+  res.cookie('token', token) // Configura la cookie
+  next()
 }
 
 module.exports = {
   verificarToken,
+  protegerRutasPrivadas,
+  firmarToken,
 }
