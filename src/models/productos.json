@@ -12,5 +12,19 @@
     "categoria": "Hogar",
     "precio": 150,
     "stock": 25
+  },
+  {
+    "id": 3,
+    "nombre": "Producto C",
+    "categoria": "Ropa",
+    "precio": 159,
+    "stock": 30
+  },
+  {
+    "id": 4,
+    "nombre": "Producto D",
+    "categoria": "Alimentos",
+    "precio": 150,
+    "stock": 30
   }
 ]

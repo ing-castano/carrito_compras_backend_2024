@@ -10,7 +10,9 @@ html
                 a(href="#", class="brand-logo center") Carrito de Compras
                 ul.right
                     li
-                        a(href="/logout", class="waves-effect waves-light btn red") Cerrar Sesión
+                        a(href="/logout", class="waves-effect waves-light btn red") Cerrar Sesión    
+                        a(href="/carrito", class="waves-effect waves-light btn red") Carrito
+
 
         div.container
             h1.center-align Bienvenido al Sistema de Carrito de Compras
@@ -41,7 +43,17 @@ html
                 h2 Catálogo de Productos
                 ul.collection
                     each producto in productos
-                        li.collection-item= producto.nombre + ' - $' + producto.precio
+                        li.collection-item
+                            form(action="/carrito/agregar", method="POST", class="col s12")
+                                div.row.center
+                                    div.input-field.col.m4
+                                        input(type="hidden",value=producto.id, name="productoId", id="productoId", required)
+                                        span= producto.nombre + ' - $' + producto.precio
+                                    div.input-field.col.m4
+                                        input(type="number", placeholder="Cantidad", name="cantidad", id="cantidad")
+                                    div.input-field.col.m4
+                                        button(type="submit", class="btn waves-effect waves-light red") Agregar
+                            
             else
                 h2.center-align No hay productos disponibles en este momento.
 
