@@ -1,0 +1,42 @@
+doctype html
+html
+    head
+        title Carrito de Compras
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    body
+        nav
+            div.nav-wrapper.blue
+                a(href="#", class="brand-logo center") Carrito de Compras
+                ul.right
+                    li
+                    a(href="/logout", class="waves-effect waves-light btn red") Cerrar Sesión    
+                    a(href="/productos", class="waves-effect waves-light btn red") Volver al listado
+        div.container
+            if pedidos && pedidos.length
+                h1.center-align Carrito de compras
+                form(action="/carrito/vaciar", method="POST")
+                    button(type="submit", class="btn waves-effect waves-light red") Vaciar carrito
+                ul.collection
+                    li.collection-item
+                            div.row
+                                span.col.m3= 'Nombre'
+                                span.col.m3= 'Cantidad'
+                                span.col.m3= 'Precio' 
+                                span.col.m3= 'Total' 
+                    each pedido in pedidos
+                        li.collection-item
+                            div.row
+                                span.col.m3= pedido.nombre 
+                                span.col.m3= pedido.cantidad 
+                                span.col.m3= pedido.precio 
+                                span.col.m3= pedido.total       
+            else
+                h2.center-align No hay productos disponibles en este momento.
+
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
+        script.
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('select');
+                M.FormSelect.init(elems);
+            });
