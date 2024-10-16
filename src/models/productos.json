@@ -26,5 +26,47 @@
     "categoria": "Alimentos",
     "precio": 150,
     "stock": 30
+  },
+  {
+    "id": 5,
+    "nombre": "Producto E",
+    "categoria": "Electrónica",
+    "precio": 700,
+    "stock": 0  
+  },
+  {
+    "id": 6,
+    "nombre": "Producto F",
+    "categoria": "Ropa",
+    "precio": 120,
+    "stock": 0  
+  },
+  {
+    "id": 7,
+    "nombre": "Producto G",
+    "categoria": "Alimentos",
+    "precio": 80,
+    "stock": 15
+  },
+  {
+    "id": 8,
+    "nombre": "Producto H",
+    "categoria": "Hogar",
+    "precio": 250,
+    "stock": 5
+  },
+  {
+    "id": 9,
+    "nombre": "Producto I",
+    "categoria": "Electrónica",
+    "precio": 999,
+    "stock": 1 
+  },
+  {
+    "id": 10,
+    "nombre": "Producto J",
+    "categoria": "Ropa",
+    "precio": 200,
+    "stock": 20
   }
 ]

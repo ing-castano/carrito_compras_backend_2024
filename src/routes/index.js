@@ -20,7 +20,7 @@ router.get('/productos', async (req, res) => {
     err.status = err.status || 500
     return next(err)
   }
-  let productosFiltrados = productos
+  let productosFiltrados = productos.filter(p => p.stock > 0); 
 
   // Filtrar por categoría
   if (categoria) {
