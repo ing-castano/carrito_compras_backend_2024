@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 // Ruta para renderizar la vista de la página principal
 router.get('/', (req, res, next) => {
   if (req.usuarioId) {
-    return res.redirect('/')
+    return res.redirect('/productos')
   }
   res.render('login')
 })
@@ -19,7 +19,7 @@ router.post('/', async (req, res, next) => {
   if (usuarioId != null) {
     req.usuarioId = usuarioId
     firmarToken(req, res, () => {
-      return res.status(200).redirect('/') // Redirigir a la página principal despues de firmar el token
+      return res.status(200).redirect('/productos') // Redirigir a la página principal despues de firmar el token
     })
   } else {
     const error = new Error('Credenciales incorrectas')
