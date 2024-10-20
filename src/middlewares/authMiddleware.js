@@ -1,4 +1,6 @@
-const jwt = require('jsonwebtoken')
+const fs = require('fs');
+const path = require('path');
+const jwt = require('jsonwebtoken');
 
 const verificarToken = (req, res, next) => {
   const token = req.cookies?.token
@@ -29,22 +31,23 @@ const firmarToken = (req, res, next) => {
   next()
 }
 
+// Verifica si el usuario tiene permisos de administrador
 const verificarAdmin = (req, res, next) => {
   const token = req.cookies?.token;
   
   if (!token) {
-    return res.redirect('/login'); // Redirigir al login si no hay token
+    return res.redirect('/login'); // Redirige al login si no hay token
   }
 
   // Verificar token y extraer usuario
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err || !decoded) {
-      return res.redirect('/login');
+      return res.redirect('/login'); // Si el token es inválido, redirige al login
     }
 
-    const usuarioId = decoded.id;
+    const usuarioId = decoded.id; // Extrae el ID del usuario desde el token
 
-    // Cargar usuarios desde archivo
+    // Cargar usuarios desde archivo JSON
     fs.promises.readFile(path.join(__dirname, '../models/usuarios.json'), 'utf-8')
       .then(data => {
         const usuarios = JSON.parse(data);
@@ -54,8 +57,9 @@ const verificarAdmin = (req, res, next) => {
           return res.status(403).send('Acceso denegado. Solo para administradores.');
         }
 
+        // Almacena el usuario en la request
         req.usuario = usuario;
-        next();
+        next(); // Si es administrador, permite el acceso
       })
       .catch(err => {
         return res.status(500).send('Error al verificar usuario.');
