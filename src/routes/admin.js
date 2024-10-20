@@ -1,12 +1,12 @@
 // routes/admin.js
 const express = require('express');
 const router = express.Router();
-const { protegerRutasAdmin } = require('../middlewares/authMiddleware');
+const { verificarAdmin } = require('../middlewares/authMiddleware');
 const { obtenerProductos, agregarProducto, editarProducto, eliminarProducto } = require('../controllers/productoController');
 const { obtenerTodos: obtenerUsuarios, editarUsuario, eliminarUsuario } = require('../controllers/usuarioController');
 
 // Ruta del panel de administración
-router.get('/admin', protegerRutasAdmin, async (req, res) => {
+router.get('/admin', verificarAdmin, async (req, res) => {
   try {
     const productos = await obtenerProductos();
     const usuarios = await obtenerUsuarios();
@@ -18,7 +18,7 @@ router.get('/admin', protegerRutasAdmin, async (req, res) => {
 });
 
 // Rutas para CRUD de productos
-router.post('/admin/producto/agregar', protegerRutasAdmin, async (req, res) => {
+router.post('/admin/producto/agregar', verificarAdmin, async (req, res) => {
   try {
     await agregarProducto(req.body);
     res.redirect('/admin');
@@ -27,7 +27,7 @@ router.post('/admin/producto/agregar', protegerRutasAdmin, async (req, res) => {
   }
 });
 
-router.post('/admin/producto/:id/editar', protegerRutasAdmin, async (req, res) => {
+router.post('/admin/producto/:id/editar', verificarAdmin, async (req, res) => {
   try {
     await editarProducto(req.params.id, req.body);
     res.redirect('/admin');
@@ -36,7 +36,7 @@ router.post('/admin/producto/:id/editar', protegerRutasAdmin, async (req, res) =
   }
 });
 
-router.get('/admin/producto/:id/eliminar', protegerRutasAdmin, async (req, res) => {
+router.get('/admin/producto/:id/eliminar', verificarAdmin, async (req, res) => {
   try {
     await eliminarProducto(req.params.id);
     res.redirect('/admin');
@@ -46,7 +46,7 @@ router.get('/admin/producto/:id/eliminar', protegerRutasAdmin, async (req, res) 
 });
 
 // Rutas para CRUD de usuarios
-router.post('/admin/usuario/:id/editar', protegerRutasAdmin, async (req, res) => {
+router.post('/admin/usuario/:id/editar', verificarAdmin, async (req, res) => {
   try {
     await editarUsuario(req.params.id, req.body);
     res.redirect('/admin');
@@ -55,7 +55,7 @@ router.post('/admin/usuario/:id/editar', protegerRutasAdmin, async (req, res) =>
   }
 });
 
-router.get('/admin/usuario/:id/eliminar', protegerRutasAdmin, async (req, res) => {
+router.get('/admin/usuario/:id/eliminar', verificarAdmin, async (req, res) => {
   try {
     await eliminarUsuario(req.params.id);
     res.redirect('/admin');
