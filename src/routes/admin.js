@@ -10,7 +10,6 @@ router.get('/admin', verificarAdmin, async (req, res) => {
   try {
     const productos = await obtenerProductos();
     const usuarios = await obtenerUsuarios();
-    // Aquí puedes cargar también los pedidos si están implementados
     res.render('panelAdmin', { productos, usuarios });
   } catch (err) {
     res.status(500).send('Error al cargar datos');
