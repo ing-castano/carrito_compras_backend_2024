@@ -7,7 +7,8 @@ const indexRoutes = require('./routes/index.js')
 const loginRoutes = require('./routes/loginRoutes.js')
 const logoutRoutes = require('./routes/logoutRoutes.js')
 const registerRoutes = require('./routes/registerRoutes.js')
-const carritoRoutes = require('./routes/carrito');
+const carritoRoutes = require('./routes/carrito')
+const adminRoutes = require('./routes/admin')
 
 const path = require('path')
 const {
@@ -35,8 +36,9 @@ app.use('/register', verificarToken, registerRoutes)
 // Rutas privadas
 app.use(protegerRutasPrivadas) // Middleware para proteger todas las rutas privadas
 app.use('/', indexRoutes)
+app.use('/admin', adminRoutes)
 app.use('/logout', logoutRoutes)
-app.use('/carrito', carritoRoutes);
+app.use('/carrito', carritoRoutes)
 
 // Ruta de error
 app.use('/*', errorMiddleware, handleError)
