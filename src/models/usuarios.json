@@ -4,7 +4,7 @@
     "username": "admin",
     "password": "$2b$10$37xgOX3LZ8Rb1x7GjTO1DeV7MuTDYeJx2sLDmPzCaB3D7woHuwxcG",
     "email": "martin@mail.com",
-    "isAdmin": false
+    "isAdmin": true
   },
   {
     "id": 2,
