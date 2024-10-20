@@ -1,0 +1,51 @@
+doctype html
+html
+  head
+    title Panel de Administración
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  body
+    nav
+      div.nav-wrapper.blue
+        a(href="#", class="brand-logo center") Panel de Administración
+        ul.right
+          li
+            a(href="/logout", class="waves-effect waves-light btn red") Cerrar Sesión
+
+    div.container
+      h1.center-align Panel de Gestión
+
+      // Gestión de Productos
+      h2.center-align Gestión de Productos
+      form(action="/admin/producto/agregar", method="POST")
+        div.input-field
+          input(type="text" name="nombre" placeholder="Nombre del producto" required)
+        div.input-field
+          input(type="number" name="precio" placeholder="Precio del producto" required)
+        button.btn.waves-effect.waves-light(type="submit") Agregar Producto
+
+      ul.collection
+        each producto in productos
+          li.collection-item
+            form(action=`/admin/producto/${producto.id}/editar`, method="POST")
+              div.input-field
+                input(type="text" name="nombre" value=producto.nombre)
+              div.input-field
+                input(type="number" name="precio" value=producto.precio)
+              button.btn.waves-effect.waves-light(type="submit") Editar
+              a.btn.waves-effect.waves-light.red(href=`/admin/producto/${producto.id}/eliminar`) Eliminar
+
+      // Gestión de Usuarios
+      h2.center-align Gestión de Usuarios
+      ul.collection
+        each usuario in usuarios
+          li.collection-item
+            form(action=`/admin/usuario/${usuario.id}/editar`, method="POST")
+              div.input-field
+                input(type="text" name="username" value=usuario.username)
+              div.input-field
+                input(type="email" name="email" value=usuario.email)
+              button.btn.waves-effect.waves-light(type="submit") Editar
+              a.btn.waves-effect.waves-light.red(href=`/admin/usuario/${usuario.id}/eliminar`) Eliminar
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")

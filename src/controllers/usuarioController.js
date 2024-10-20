@@ -42,7 +42,7 @@ const verificarUsuario = async (usuario) => {
   }
 }
 
-const registrarUsuario = async ({ username, password, mail }) => {
+const registrarUsuario = async ({ username, password, mail, isAdmin = false }) => {
   // Verificar que usario no exista
   const users = await obtenerTodos()
   // Encuentra al usuario con el nombre de usuario correspondiente
@@ -61,7 +61,7 @@ const registrarUsuario = async ({ username, password, mail }) => {
     users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1
 
   // Crear nuevo usuario
-  const nuevoUsuario = { id, username, password: hashedPassword, mail }
+  const nuevoUsuario = { id, username, password: hashedPassword, mail, isAdmin }
 
   // Agregar el nuevo usuario a la lista de usuarios
   users.push(nuevoUsuario)
@@ -81,7 +81,36 @@ const registrarUsuario = async ({ username, password, mail }) => {
   }
 }
 
+
+// Editar un usuario existente
+const editarUsuario = async (id, { username, email }) => {
+  const usuarios = await obtenerTodos();
+  const usuarioIndex = usuarios.findIndex(u => u.id === parseInt(id));
+
+  if (usuarioIndex !== -1) {
+    usuarios[usuarioIndex].username = username;
+    usuarios[usuarioIndex].email = email;
+
+    await fs.promises.writeFile(usuariosFile, JSON.stringify(usuarios, null, 2), 'utf-8');
+    return usuarios[usuarioIndex];
+  } else {
+    throw new Error('Usuario no encontrado');
+  }
+};
+
+// Eliminar un usuario
+const eliminarUsuario = async (id) => {
+  const usuarios = await obtenerTodos();
+  const usuariosFiltrados = usuarios.filter(u => u.id !== parseInt(id));
+
+  await fs.promises.writeFile(usuariosFile, JSON.stringify(usuariosFiltrados, null, 2), 'utf-8');
+  return;
+};
+
 module.exports = {
+  obtenerTodos,
   verificarUsuario,
   registrarUsuario,
+  editarUsuario,
+  eliminarUsuario,
 }
