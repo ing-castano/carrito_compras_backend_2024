@@ -3,6 +3,8 @@ const path = require('path')
 const bcrypt = require('bcrypt')
 const Usuario = require('../models/usuario')
 
+const usuariosPath = path.join(__dirname, '../models/usuarios.json')
+
 // Función para obtener todos los usuarios desde el archivo JSON
 const obtenerTodos = async () => {
   try {
@@ -42,7 +44,7 @@ const verificarUsuario = async (usuario) => {
   }
 }
 
-const registrarUsuario = async ({ username, password, mail, isAdmin = false }) => {
+const registrarUsuario = async ({ username, password, email, isAdmin = false }) => {
   // Verificar que usario no exista
   const users = await obtenerTodos()
   // Encuentra al usuario con el nombre de usuario correspondiente
@@ -61,7 +63,7 @@ const registrarUsuario = async ({ username, password, mail, isAdmin = false }) =
     users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1
 
   // Crear nuevo usuario
-  const nuevoUsuario = { id, username, password: hashedPassword, mail, isAdmin }
+  const nuevoUsuario = { id, username, password: hashedPassword, email, isAdmin }
 
   // Agregar el nuevo usuario a la lista de usuarios
   users.push(nuevoUsuario)
@@ -91,7 +93,7 @@ const editarUsuario = async (id, { username, email }) => {
     usuarios[usuarioIndex].username = username;
     usuarios[usuarioIndex].email = email;
 
-    await fs.promises.writeFile(usuariosFile, JSON.stringify(usuarios, null, 2), 'utf-8');
+    await fs.promises.writeFile(usuariosPath, JSON.stringify(usuarios, null, 2), 'utf-8');
     return usuarios[usuarioIndex];
   } else {
     throw new Error('Usuario no encontrado');
@@ -103,7 +105,7 @@ const eliminarUsuario = async (id) => {
   const usuarios = await obtenerTodos();
   const usuariosFiltrados = usuarios.filter(u => u.id !== parseInt(id));
 
-  await fs.promises.writeFile(usuariosFile, JSON.stringify(usuariosFiltrados, null, 2), 'utf-8');
+  await fs.promises.writeFile(usuariosPath, JSON.stringify(usuariosFiltrados, null, 2), 'utf-8');
   return;
 };
 

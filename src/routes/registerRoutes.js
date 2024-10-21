@@ -11,10 +11,10 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  const { username, password, mail } = req.body
+  const { username, password, email } = req.body
 
   // Verificar que ningún campo esté vacío
-  if (!username || !password || !mail) {
+  if (!username || !password || !email) {
     const error = new Error('Bad Request. Todos los campos son requeridos.')
     error.status = 400
     return next(error)
@@ -25,7 +25,7 @@ router.post('/', async (req, res, next) => {
     const nuevoUsuario = await usuarioController.registrarUsuario({
       username,
       password,
-      mail,
+      email,
     })
     req.usuarioId = nuevoUsuario.id
     firmarToken(req, res, () => {

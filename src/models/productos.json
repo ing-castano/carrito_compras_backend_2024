@@ -54,29 +54,5 @@
     "categoria": "Hogar",
     "precio": 250,
     "stock": 5
-  },
-  {
-    "id": 9,
-    "nombre": "Producto I",
-    "categoria": "Electrónica",
-    "precio": 999,
-    "stock": 1
-  },
-  {
-    "id": 10,
-    "nombre": "Producto J",
-    "categoria": "Ropa",
-    "precio": 200,
-    "stock": 20
-  },
-  {
-    "id": 11,
-    "nombre": "producto K",
-    "precio": 100
-  },
-  {
-    "id": 12,
-    "nombre": "producto L",
-    "precio": 110
   }
 ]

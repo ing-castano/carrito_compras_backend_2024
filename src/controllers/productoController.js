@@ -17,12 +17,14 @@ const obtenerProductos = async () => {
 }
 
 // Agregar un nuevo producto
-const agregarProducto = async ({ nombre, precio }) => {
+const agregarProducto = async ({ nombre, categoria, precio, stock }) => {
   const productos = await obtenerProductos()
   const nuevoProducto = {
     id: productos.length ? Math.max(...productos.map((p) => p.id)) + 1 : 1,
     nombre: nombre,
+    categoria: categoria,
     precio: parseFloat(precio),
+    stock: parseInt(stock),
   }
   productos.push(nuevoProducto)
 
@@ -40,13 +42,15 @@ const agregarProducto = async ({ nombre, precio }) => {
 }
 
 // Editar un producto existente
-const editarProducto = async (id, { nombre, precio }) => {
+const editarProducto = async (id, { nombre, categoria, precio, stock }) => {
   const productos = await obtenerProductos()
   const productoIndex = productos.findIndex((p) => p.id === parseInt(id))
 
   if (productoIndex !== -1) {
     productos[productoIndex].nombre = nombre
+    productos[productoIndex].categoria = categoria
     productos[productoIndex].precio = parseFloat(precio)
+    productos[productoIndex].stock = parseInt(stock)
 
     await fs.promises.writeFile(
       productosPath,

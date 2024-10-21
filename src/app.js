@@ -8,7 +8,7 @@ const loginRoutes = require('./routes/loginRoutes.js')
 const logoutRoutes = require('./routes/logoutRoutes.js')
 const registerRoutes = require('./routes/registerRoutes.js')
 const carritoRoutes = require('./routes/carrito')
-const adminRoutes = require('./routes/admin')
+const adminRoutes = require('./routes/adminRoutes.js')
 
 const path = require('path')
 const {

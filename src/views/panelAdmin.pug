@@ -21,7 +21,11 @@ html
         div.input-field
           input(type="text" name="nombre" placeholder="Nombre del producto" required)
         div.input-field
+          input(type="text" name="categoria" placeholder="Categoría del producto" required)
+        div.input-field
           input(type="number" name="precio" placeholder="Precio del producto" required)
+        div.input-field
+          input(type="number" name="stock" placeholder="Stock del producto" required)
         button.btn.waves-effect.waves-light(type="submit") Agregar Producto
 
       ul.collection
@@ -31,7 +35,11 @@ html
               div.input-field
                 input(type="text" name="nombre" value=producto.nombre)
               div.input-field
+                input(type="text" name="categoria" value=producto.categoria)
+              div.input-field
                 input(type="number" name="precio" value=producto.precio)
+              div.input-field
+                input(type="number" name="stock" value=producto.stock)
               button.btn.waves-effect.waves-light(type="submit") Editar
               a.btn.waves-effect.waves-light.red(href=`/admin/producto/${producto.id}/eliminar`) Eliminar
 

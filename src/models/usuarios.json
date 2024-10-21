@@ -3,49 +3,42 @@
     "id": 1,
     "username": "admin",
     "password": "$2b$10$37xgOX3LZ8Rb1x7GjTO1DeV7MuTDYeJx2sLDmPzCaB3D7woHuwxcG",
-    "email": "martin@mail.com",
+    "email": "admin@mail.com",
     "isAdmin": true
   },
   {
     "id": 2,
     "username": "userTest",
     "password": "$2b$10$UK95C.6E.mUcUdSJ0xrK7OjueLhiuRonHiGbkPKctUed.CVV5VDeG",
-    "mail": "mailTest@mail.com",
+    "email": "emailTest@mail.com",
     "isAdmin": false
   },
   {
     "id": 3,
     "username": "martin",
     "password": "$2b$10$za60dMIsaBilXimZhY1wUuZcEmeI2s5XJzC3T6dVgoVI9DOp3fJTe",
-    "mail": "martin1",
+    "email": "martin@gmail.com",
     "isAdmin": false
   },
   {
     "id": 4,
     "username": "martin1",
     "password": "$2b$10$VWMDjmjf3dP4qRvzBViOrulr1QzQE58HW65rLwUFSvf1cwg8mh24O",
-    "mail": "martin1",
+    "email": "martin1@gmail.com",
     "isAdmin": false
   },
   {
     "id": 5,
     "username": "martin2",
     "password": "$2b$10$L9wmRfL4MI0AR5/uusE6fOa6m2GI0elws.sHWdadvqT/4W8czkBze",
-    "mail": "martin2",
-    "isAdmin": false
-  },
-  {
-    "id": 6,
-    "username": "test2",
-    "password": "$2b$10$WVN4VxTzPxCmdPoo33q.I.4.xSKCxukzfEYej5KGZQRdReZk1WIBq",
-    "mail": "tes2@gmail.com",
+    "email": "martin2@gmail.com",
     "isAdmin": false
   },
   {
     "id": 7,
     "username": "Agustin",
     "password": "$2b$10$q5R5DV0AzJPExyoKJ/reTe2B8yDThuqECEWLQyG371z8iGFDlNU7u",
-    "mail": "guarmes@gmail.com",
+    "email": "guarmes@gmail.com",
     "isAdmin": true
   }
 ]
