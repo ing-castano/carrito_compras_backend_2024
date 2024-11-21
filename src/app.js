@@ -1,6 +1,8 @@
 // Archivo principal del proyecto
-require('dotenv').config() // Cargar las variables de entorno
+require('dotenv').config()// Cargar las variables de entorno
+console.log('MONGO_URI:', process.env.MONGO_URI); 
 const express = require('express')
+const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser') // Necesario para leer las cookies
 const app = express()
 const indexRoutes = require('./routes/index.js')
@@ -28,6 +30,16 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser()) // Para que el middleware pueda acceder a las cookies
+
+//Conexion a base de datos
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('Conectado a MongoDB');
+  })
+  .catch((error) => {
+    console.log('Error al conectar con MongoDB:', error);
+  });
 
 // Rutas públicas
 app.use('/login', verificarToken, loginRoutes)

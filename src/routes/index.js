@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 })
 
 // Ruta para mostrar productos con filtros
-router.get('/productos', async (req, res) => {
+router.get('/productos', async (req, res,next) => {
   let { categoria, minPrecio, maxPrecio } = req.query
   let productos = []
   try {

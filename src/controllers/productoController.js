@@ -7,79 +7,58 @@ const productosPath = path.join(__dirname, '../models/productos.json')
 
 // Función para obtener todos los productos desde el archivo JSON
 const obtenerProductos = async () => {
-  // Verifica que el archivo JSON exista y cargue los productos
   try {
-    const data = await fs.promises.readFile(productosPath, 'utf-8')
-    return JSON.parse(data)
+   return await Producto.find();
   } catch (error) {
-    throw error
+    console.error("Error al obtener productos de MongoDB:", error);
+    throw new Error("No se pudieron cargar los productos desde la base de datos");
   }
-}
+};
 
 // Agregar un nuevo producto
 const agregarProducto = async ({ nombre, categoria, precio, stock }) => {
   const productos = await obtenerProductos()
-  const nuevoProducto = {
-    id: productos.length ? Math.max(...productos.map((p) => p.id)) + 1 : 1,
+  const nuevoProducto = new Producto({
     nombre: nombre,
     categoria: categoria,
     precio: parseFloat(precio),
     stock: parseInt(stock),
-  }
-  productos.push(nuevoProducto)
+  });
 
   try {
-    await fs.promises.writeFile(
-      productosPath,
-      JSON.stringify(productos, null, 2),
-      'utf-8'
-    )
+    await nuevoProducto.save();
+    return nuevoProducto;
   } catch (err) {
     throw err
   }
-
-  return nuevoProducto
-}
+};
 
 // Editar un producto existente
 const editarProducto = async (id, { nombre, categoria, precio, stock }) => {
   const productos = await obtenerProductos()
-  const productoIndex = productos.findIndex((p) => p.id === parseInt(id))
+  try {
 
-  if (productoIndex !== -1) {
-    productos[productoIndex].nombre = nombre
-    productos[productoIndex].categoria = categoria
-    productos[productoIndex].precio = parseFloat(precio)
-    productos[productoIndex].stock = parseInt(stock)
+  const productoIndex = await Producto.findByIdAndUpdate(id, {
+    nombre : nombre,
+    categoria : categoria,
+    precio : parseFloat(precio),
+    stock : parseInt(stock),
+  }, { new: true} );
 
-    await fs.promises.writeFile(
-      productosPath,
-      JSON.stringify(productos, null, 2),
-      'utf-8'
-    )
-    return productos[productoIndex]
-  } else {
+   return productoIndex;
+  } catch(err) {
     throw new Error('Producto no encontrado')
   }
 }
 
 // Eliminar un producto
 const eliminarProducto = async (id) => {
-  const productos = await obtenerProductos()
-  const productosFiltrados = productos.filter((p) => p.id !== parseInt(id))
-
   try {
-    await fs.promises.writeFile(
-      productosPath,
-      JSON.stringify(productosFiltrados, null, 2),
-      'utf-8'
-    )
+    await Producto.findByIdAndDelete(id);
   } catch (err) {
-    console.log(err)
+   throw err;
   }
-
-  return
-}
+};
 
 module.exports = {
   obtenerProductos,
