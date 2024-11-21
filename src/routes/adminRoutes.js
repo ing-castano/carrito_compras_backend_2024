@@ -30,6 +30,7 @@ router.post('/producto/agregar', verificarAdmin, async (req, res) => {
     await agregarProducto(req.body)
     res.redirect('/admin')
   } catch (err) {
+    console.error('Error al agregar producto:', err);
     res.status(500).send('Error al agregar producto')
   }
 })

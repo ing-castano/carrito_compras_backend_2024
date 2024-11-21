@@ -15,48 +15,52 @@ const obtenerProductos = async () => {
   }
 };
 
+//Generar Id del nuevo producto
+const generarIdProducto = async () => {
+  const ultimoProducto = await Producto.findOne().sort({ id: -1 });
+  return ultimoProducto ? ultimoProducto.id + 1 : 1;
+};
 // Agregar un nuevo producto
-const agregarProducto = async ({ nombre, categoria, precio, stock }) => {
-  const productos = await obtenerProductos()
-  const nuevoProducto = new Producto({
-    nombre: nombre,
-    categoria: categoria,
-    precio: parseFloat(precio),
-    stock: parseInt(stock),
-  });
 
+const agregarProducto = async (productoData) => {
   try {
+    const nuevoId = await generarIdProducto(); // Generar un id único
+    const nuevoProducto = new Producto({ ...productoData, id: nuevoId }); // Asignar el id generado
     await nuevoProducto.save();
-    return nuevoProducto;
   } catch (err) {
-    throw err
+    throw new Error('Error al agregar producto: ' + err.message);
   }
 };
 
+
 // Editar un producto existente
 const editarProducto = async (id, { nombre, categoria, precio, stock }) => {
-  const productos = await obtenerProductos()
   try {
+    const producto = await Producto.findByIdAndUpdate(id, {
+      nombre: nombre,
+      categoria: categoria,
+      precio: parseFloat(precio),
+      stock: parseInt(stock),
+    }, { new: true });
 
-  const productoIndex = await Producto.findByIdAndUpdate(id, {
-    nombre : nombre,
-    categoria : categoria,
-    precio : parseFloat(precio),
-    stock : parseInt(stock),
-  }, { new: true} );
-
-   return productoIndex;
-  } catch(err) {
-    throw new Error('Producto no encontrado')
+    if (!producto) {
+      throw new Error('Producto no encontrado');
+    }
+    return producto;
+  } catch (err) {
+    throw new Error('Error al editar el producto');
   }
-}
+};
 
 // Eliminar un producto
 const eliminarProducto = async (id) => {
   try {
-    await Producto.findByIdAndDelete(id);
+    const productoEliminado = await Producto.findByIdAndDelete(id);
+    if (!productoEliminado) {
+      throw new Error('Producto no encontrado');
+    }
   } catch (err) {
-   throw err;
+    throw new Error('Error al eliminar el producto');
   }
 };
 
