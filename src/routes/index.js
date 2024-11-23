@@ -2,28 +2,32 @@ const express = require('express')
 const router = express.Router()
 const fs = require('fs')
 const path = require('path')
-const { obtenerProductos } = require('../controllers/productoController')
+const { obtenerProductos, obtenerCategorias } = require('../controllers/productoController');
+
 
 // Ruta para renderizar la vista de la página principal
-router.get('/', (req, res) => {
-  res.render('index')
-})
+router.get('/', async (req, res, next) => {
+  try {
+    const categorias = await obtenerCategorias(); // Esta función debe devolver las categorías desde tu base de datos
+    res.render('index', { categorias, productos: [] });
+  } catch (error) {
+    error.status = error.status || 500;
+    next(error); // Pasa el error al manejador de errores
+  }
+});
+
 
 // Ruta para mostrar productos con filtros
-router.get('/productos', async (req, res,next) => {
+router.get('/productos', async (req, res, next) => {
   let { categoria, minPrecio, maxPrecio } = req.query
-  let productos = []
+
   try {
+    const categorias = await obtenerCategorias();
     productos = await obtenerProductos()
-  } catch (err) {
-    productos = [] // En caso de error, productos será un array vacío
-    err.status = err.status || 500
-    return next(err)
-  }
-  let productosFiltrados = productos.filter(p => p.stock > 0); 
+    let productosFiltrados = productos.filter(p => p.stock > 0); 
 
   // Filtrar por categoría
-  if (categoria) {
+  if (categoria && categoria !== '') {
     productosFiltrados = productosFiltrados.filter(
       (p) => p.categoria.toLowerCase() === categoria.toLowerCase()
     )
@@ -42,7 +46,13 @@ router.get('/productos', async (req, res,next) => {
   }
 
   // Renderizar vista con los productos filtrados
-  res.render('index', { productos: productosFiltrados })
+  res.render('index', { productos: productosFiltrados, categorias: categorias  })
+
+} catch (err) {
+  productos = [] // En caso de error, productos será un array vacío
+  err.status = err.status || 500
+  return next(err)
+}
 })
 
 module.exports = router

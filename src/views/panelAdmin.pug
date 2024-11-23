@@ -21,7 +21,13 @@ html
         div.input-field
           input(type="text" name="nombre" placeholder="Nombre del producto" required)
         div.input-field
-          input(type="text" name="categoria" placeholder="Categoría del producto" required)
+          select(name="categoria" id="categoria" required)
+            option(value="" disabled selected) Selecciona una categoría
+            each categoria in categorias
+              option(value=categoria) #{categoria}
+            option(value="otra") Otra categoría
+        div.input-field#otra-categoria-container(style="display: none;")
+          input(type="text" id="otra-categoria" name="nuevaCategoria" placeholder="Ingresa la nueva categoría")
         div.input-field
           input(type="number" name="precio" placeholder="Precio del producto" required)
         div.input-field
@@ -57,3 +63,26 @@ html
               a.btn.waves-effect.waves-light.red(href=`/admin/usuario/${usuario.id}/eliminar`) Eliminar
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        const elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems); // Inicializa el select
+
+        const categoriaSelect = document.getElementById('categoria');
+        const otraCategoriaContainer = document.getElementById('otra-categoria-container');
+        const otraCategoriaInput = document.getElementById('otra-categoria');
+
+        categoriaSelect.addEventListener('change', () => {
+          if (categoriaSelect.value === 'otra') {
+            otraCategoriaContainer.style.display = 'block';
+            otraCategoriaInput.required = true;
+          } else {
+            otraCategoriaContainer.style.display = 'none';
+            otraCategoriaInput.required = false;
+            otraCategoriaInput.value = '';
+          }
+        });
+      });
+
+
+

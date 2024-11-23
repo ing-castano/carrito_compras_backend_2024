@@ -22,9 +22,8 @@ html
                     div.input-field.col.s6
                         select(name="categoria", id="categoria")
                             option(value="") Selecciona una categoría
-                            option(value="Electrónica") Electrónica
-                            option(value="Ropa") Ropa
-                            option(value="Alimentos") Alimentos
+                            each categoria in categorias
+                                option(value=categoria)= categoria
                         label(for="categoria") Categoría:
                     
                     div.input-field.col.s6

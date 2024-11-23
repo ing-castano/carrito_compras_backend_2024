@@ -3,8 +3,6 @@ const path = require('path')
 const bcrypt = require('bcrypt')
 const Producto = require('../models/producto')
 
-const productosPath = path.join(__dirname, '../models/productos.json')
-
 // Función para obtener todos los productos desde el archivo JSON
 const obtenerProductos = async () => {
   try {
@@ -18,19 +16,35 @@ const obtenerProductos = async () => {
 //Generar Id del nuevo producto
 const generarIdProducto = async () => {
   const ultimoProducto = await Producto.findOne().sort({ id: -1 });
+  console.log(ultimoProducto)
   return ultimoProducto ? ultimoProducto.id + 1 : 1;
 };
 // Agregar un nuevo producto
 
 const agregarProducto = async (productoData) => {
   try {
-    const nuevoId = await generarIdProducto(); // Generar un id único
-    const nuevoProducto = new Producto({ ...productoData, id: nuevoId }); // Asignar el id generado
+    const { nombre, categoria, nuevaCategoria, precio, stock } = productoData;
+
+    //si seleccionó "Otra categoría"
+    const categoriaFinal = categoria === 'otra' ? nuevaCategoria : categoria;
+    console.log('Datos recibidos:', productoData);
+
+
+    const nuevoId = await generarIdProducto(); // generar un id 
+    const nuevoProducto = new Producto({ 
+      nombre, 
+      categoria: categoriaFinal, 
+      precio: parseFloat(precio), 
+      stock: parseInt(stock), 
+      id: nuevoId 
+    });
+
     await nuevoProducto.save();
   } catch (err) {
     throw new Error('Error al agregar producto: ' + err.message);
   }
 };
+
 
 
 // Editar un producto existente
@@ -64,9 +78,21 @@ const eliminarProducto = async (id) => {
   }
 };
 
+// Obtener las categorias de los productos
+const obtenerCategorias = async () => {
+  try {
+    const categorias = await Producto.distinct("categoria");
+    return categorias;
+  } catch (error) {
+    console.error("Error al obtener categorías:", error);
+    throw new Error("No se pudieron cargar las categorías");
+  }
+};
+
 module.exports = {
   obtenerProductos,
   agregarProducto,
   editarProducto,
   eliminarProducto,
+  obtenerCategorias,
 }

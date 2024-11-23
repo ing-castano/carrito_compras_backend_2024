@@ -30,7 +30,9 @@ html
                                 span.col.m3= pedido.nombre 
                                 span.col.m3= pedido.cantidad 
                                 span.col.m3= pedido.precio 
-                                span.col.m3= pedido.total       
+                                span.col.m3= pedido.total   
+                form(action="/carrito/finalizar", method="POST")
+                    button(type="submit", class="btn waves-effect waves-light green") Finalizar compra    
             else
                 h2.center-align No hay productos disponibles en este momento.
 

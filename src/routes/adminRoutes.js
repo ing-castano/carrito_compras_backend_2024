@@ -6,6 +6,7 @@ const {
   agregarProducto,
   editarProducto,
   eliminarProducto,
+  obtenerCategorias,
 } = require('../controllers/productoController')
 const {
   obtenerTodos: obtenerUsuarios,
@@ -18,11 +19,15 @@ router.get('/', verificarAdmin, async (req, res) => {
   try {
     const productos = await obtenerProductos()
     const usuarios = await obtenerUsuarios()
-    res.render('panelAdmin', { productos, usuarios })
+    const categorias = await obtenerCategorias();
+    console.log(categorias);
+    res.render('panelAdmin', { productos, usuarios, categorias })
   } catch (err) {
     res.status(500).send('Error al cargar datos')
   }
 })
+
+
 
 // Rutas para CRUD de productos
 router.post('/producto/agregar', verificarAdmin, async (req, res) => {
