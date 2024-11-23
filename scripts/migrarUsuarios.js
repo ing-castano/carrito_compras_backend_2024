@@ -1,7 +1,7 @@
-require('dotenv')
+require('dotenv').config()
 const mongoose = require('mongoose')
-const Producto = require('../src/models/producto') // Ajusta la ruta según tu estructura
-const productosJSON = require('../src/models/productos.json') // Ruta al archivo JSON
+const usuariosJSON = require('../src/models/usuarios.json') // Ruta al archivo JSON
+const Usuario = require('../src/models/usuario')
 // Conectar a MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -16,14 +16,14 @@ mongoose
   })
 
 // Función para insertar productos en la base de datos
-async function migrarProductos() {
+async function migrarUsuarios() {
   try {
     // Limpiar la colección de productos (si quieres borrar los existentes antes de insertar nuevos)
-    await Producto.deleteMany({})
+    await Usuario.deleteMany({})
 
     // Insertar los productos
-    const productos = await Producto.insertMany(productosJSON)
-    console.log('Productos migrados con éxito:', productos)
+    const usuarios = await Usuario.insertMany(usuariosJSON)
+    console.log('Usuarios migrados con éxito:', usuarios)
     mongoose.connection.close()
   } catch (error) {
     console.error('Error al migrar los productos:', error)
@@ -32,4 +32,4 @@ async function migrarProductos() {
 }
 
 // Ejecutar la migración
-migrarProductos()
+migrarUsuarios()

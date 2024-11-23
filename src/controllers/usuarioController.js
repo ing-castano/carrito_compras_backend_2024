@@ -20,62 +20,58 @@ const obtenerTodos = async () => {
 }
 
 // Función para verificar usuario
-const verificarUsuario = async (usuario) => {
-  const users = await obtenerTodos() // Asegúrate de usar await aquí
+const verificarUsuario = async ({ username, password }) => {
+  try {
+    const usuarioEncontrado = await Usuario.findOne({ username })
 
-  // Encuentra al usuario con el nombre de usuario correspondiente
-  const userEncontrado = users.find(
-    (user) => user.username === usuario.username
-  )
-  if (!userEncontrado) {
-    return null // Usuario no encontrado
-  }
+    if (!usuarioEncontrado) {
+      return null // Usuario no encontrado
+    }
 
-  // Verificar la contraseña usando bcrypt
-  const esValida = await bcrypt.compare(
-    usuario.password,
-    userEncontrado.password
-  )
-
-  if (esValida) {
-    return userEncontrado.id // Retorna el ID si la contraseña es correcta
-  } else {
-    return null // Contraseña incorrecta
+    // Verificar la contraseña usando bcrypt
+    const esValida = await bcrypt.compare(password, usuarioEncontrado.password)
+    if (esValida) {
+      return usuarioEncontrado._id // Retorna el ID si la contraseña es correcta
+    } else {
+      return null // Contraseña incorrecta
+    }
+  } catch (err) {
+    console.error('Error al verificar usuario:', err)
+    throw new Error('Error al verificar usuario')
   }
 }
 
-const registrarUsuario = async ({ username, password, email, isAdmin = false }) => {
-  // Verificar que usario no exista
-  const users = await obtenerTodos()
-  // Encuentra al usuario con el nombre de usuario correspondiente
-  const userEncontrado = users.find((user) => user.username === username)
-  if (userEncontrado) {
-    const error = new Error('Usuario ya registrado')
-    error.status = 400
-    throw error
-  }
-
-  // Encriptar la contraseña antes de guardar
-  const hashedPassword = await bcrypt.hash(password, 10)
-
-  // Generar nuevo id
-  const id =
-    users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1
-
-  // Crear nuevo usuario
-  const nuevoUsuario = { id, username, password: hashedPassword, email, isAdmin }
-
-  // Agregar el nuevo usuario a la lista de usuarios
-  users.push(nuevoUsuario)
-
-  // Escribir el nuevo arreglo de usuarios en el archivo JSON
+const registrarUsuario = async ({
+  username,
+  password,
+  email,
+  isAdmin = false,
+}) => {
   try {
-    await fs.promises.writeFile(
-      path.join(__dirname, '../models/usuarios.json'),
-      JSON.stringify(users, null, 2), // Convertir a JSON con formato legible
-      'utf-8'
-    )
-    return nuevoUsuario // Retorna el nuevo usuario registrado
+    // Verificar que usario no exista
+    const usuarioExistente = await Usuario.findOne({
+      $or: [{ username }, { email }],
+    })
+    if (usuarioExistente) {
+      const error = new Error('Usuario ya registrado')
+      error.status = 400
+      throw error
+    }
+
+    // Encriptar la contraseña antes de guardar
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    // Crear un nuevo usuario
+    const nuevoUsuario = new Usuario({
+      username,
+      password: hashedPassword,
+      email,
+    })
+
+    // Guarda el nuevo usuario en la base de datos
+    const usuarioGuardado = await nuevoUsuario.save()
+    // Retorna el nuevo usuario registrado
+    return usuarioGuardado
   } catch (err) {
     const error = new Error('Error al escribir en la base de datos')
     error.status = 500
@@ -83,31 +79,39 @@ const registrarUsuario = async ({ username, password, email, isAdmin = false }) 
   }
 }
 
-
 // Editar un usuario existente
 const editarUsuario = async (id, { username, email }) => {
-  const usuarios = await obtenerTodos();
-  const usuarioIndex = usuarios.findIndex(u => u.id === parseInt(id));
+  try {
+    // Busca y actualiza el usuario por ID
+    const usuarioActualizado = await Usuario.findByIdAndUpdate(
+      id,
+      { username, email },
+      { new: true, runValidators: true } // Retorna el documento actualizado y valida los datos
+    )
 
-  if (usuarioIndex !== -1) {
-    usuarios[usuarioIndex].username = username;
-    usuarios[usuarioIndex].email = email;
-
-    await fs.promises.writeFile(usuariosPath, JSON.stringify(usuarios, null, 2), 'utf-8');
-    return usuarios[usuarioIndex];
-  } else {
-    throw new Error('Usuario no encontrado');
+    if (!usuarioActualizado) {
+      throw new Error('Usuario no encontrado')
+    }
+    return usuarioActualizado
+  } catch (err) {
+    throw new Error('Error al editar usuario')
   }
-};
+}
 
 // Eliminar un usuario
 const eliminarUsuario = async (id) => {
-  const usuarios = await obtenerTodos();
-  const usuariosFiltrados = usuarios.filter(u => u.id !== parseInt(id));
-
-  await fs.promises.writeFile(usuariosPath, JSON.stringify(usuariosFiltrados, null, 2), 'utf-8');
-  return;
-};
+  try {
+    // Elimina el usuario por ID
+    const usuarioEliminado = await Usuario.findByIdAndDelete(id)
+    if (!usuarioEliminado) {
+      throw new Error('Usuario no encontrado')
+    }
+    return
+  } catch (err) {
+    console.error('Error al eliminar usuario:', err)
+    throw new Error('Error al eliminar usuario')
+  }
+}
 
 module.exports = {
   obtenerTodos,
