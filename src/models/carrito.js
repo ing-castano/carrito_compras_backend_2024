@@ -2,38 +2,41 @@ const Pedido = require('./pedido');
 
 class Carrito {
   constructor() {
-    this.pedidos = []; // Array que almacena los pedidos (items del carrito)
+    this.productos = []; // Array que almacena los pedidos (items del carrito)
   }
 
   // Método para agregar un producto al carrito
   agregarProducto(producto, cantidad) {
-    const pedidoExistente = this.pedidos.find(pedido => pedido.producto.id === producto.id);
+    const productoExistente = this.productos.find(item => item.producto.id === producto.id);
     
-    if (pedidoExistente) {
-      pedidoExistente.cantidad += cantidad;
+    if (productoExistente) {
+      productoExistente.cantidad += cantidad;
     } else {
-      const nuevoPedido = new Pedido(producto, Number(cantidad));
-      this.pedidos.push(nuevoPedido);
+      if (cantidad > producto.stock) {
+        throw new Error(`No hay suficiente stock para el producto ${producto.nombre}`);
+      }
+    this.productos.push({ producto, cantidad: Number(cantidad) });
     }
   }
 
   // Método para calcular el total del carrito
   calcularTotalCarrito() {
-    return this.pedidos.reduce((total, pedido) => total + pedido.calcularTotal(), 0);
+    return this.productos.reduce((total, item) => total + item.producto.precio * item.cantidad, 0);
   }
 
   // Método para vaciar el carrito
   vaciarCarrito() {
-    this.pedidos = [];
+    this.productos = [];
   }
 
   // Método para mostrar los productos en el carrito
   mostrarCarrito() {
-    return this.pedidos.map(pedido => ({
-      nombre: pedido.producto.nombre,
-      cantidad: pedido.cantidad,
-      precio: pedido.producto.precio,
-      total: pedido.calcularTotal()
+    return this.productos.map(item => ({
+      id: item.producto.id,
+      nombre: item.producto.nombre,
+      cantidad: item.cantidad,
+      precio: item.producto.precio,
+      total: item.producto.precio * item.cantidad
     }));
   }
 }

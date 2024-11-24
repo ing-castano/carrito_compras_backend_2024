@@ -1,13 +1,20 @@
-class Pedido {
-  constructor(producto, cantidad) {
-    this.producto = producto // Objeto de la clase Producto
-    this.cantidad = cantidad // Cantidad del producto agregado al carrito
-  }
+const mongoose = require('mongoose');
 
-  // Método para calcular el total del pedido (producto * cantidad)
-  calcularTotal() {
-    return this.producto.precio * this.cantidad
-  }
-}
+const PedidoSchema = new mongoose.Schema({
+  numeroPedido: { type: Number, required: true, unique: true },
+  total: { type: Number, required: true },
+  estado: { type: String, default: 'Solicitado', enum: ['Solicitado', 'Procesado', 'Completado'] },
+  fechaCreacion: { type: Date, default: Date.now },
+  productos: [
+    {
+      nombre: String,
+      cantidad: Number,
+      precio: Number,
+      total: Number,
+    },
+  ],
+});
 
-module.exports = Pedido
+const Pedido = mongoose.model('Pedido', PedidoSchema);
+
+module.exports = Pedido;

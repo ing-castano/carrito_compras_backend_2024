@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express')
 const Carrito = require('../models/carrito')
 const Producto = require('../models/producto');
-const PedidoModel = require('../models/pedidoModel');
+const PedidoModel = require('../models/pedido');
 const router = express.Router()
 const carritos = {}
 
