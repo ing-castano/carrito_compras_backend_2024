@@ -50,33 +50,45 @@ const agregarProducto = async (productoData) => {
 // Editar un producto existente
 const editarProducto = async (id, { nombre, categoria, precio, stock }) => {
   try {
-    const producto = await Producto.findByIdAndUpdate(id, {
-      nombre: nombre,
-      categoria: categoria,
-      precio: parseFloat(precio),
-      stock: parseInt(stock),
-    }, { new: true });
+    const producto = await Producto.findOneAndUpdate(
+      { id: id }, // Busca por el campo `id` (tipo Number)
+      {
+        nombre,
+        categoria,
+        precio: parseFloat(precio),
+        stock: parseInt(stock),
+      },
+      { new: true } // Devuelve el documento actualizado
+    );
 
     if (!producto) {
       throw new Error('Producto no encontrado');
     }
+
     return producto;
   } catch (err) {
+    console.error('Error al editar producto:', err.message);
     throw new Error('Error al editar el producto');
   }
 };
 
+
 // Eliminar un producto
 const eliminarProducto = async (id) => {
   try {
-    const productoEliminado = await Producto.findByIdAndDelete(id);
+    const productoEliminado = await Producto.findOneAndDelete({ id: id });
+
     if (!productoEliminado) {
       throw new Error('Producto no encontrado');
     }
+
+    return productoEliminado; // Retorna el producto eliminado si es necesario
   } catch (err) {
+    console.error('Error al eliminar producto:', err.message);
     throw new Error('Error al eliminar el producto');
   }
 };
+
 
 // Obtener las categorias de los productos
 const obtenerCategorias = async () => {
