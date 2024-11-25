@@ -2,22 +2,21 @@ const fs = require('fs')
 const path = require('path')
 const bcrypt = require('bcrypt')
 const Usuario = require('../models/usuario')
+const mongoose = require('mongoose');
 
 const usuariosPath = path.join(__dirname, '../models/usuarios.json')
 
 // Función para obtener todos los usuarios desde el archivo JSON
 const obtenerTodos = async () => {
   try {
-    const data = await fs.promises.readFile(
-      path.join(__dirname, '../models/usuarios.json'),
-      'utf-8'
-    )
-    return JSON.parse(data)
+    // Obtener todos los usuarios desde MongoDB
+    return await Usuario.find();  // Devuelve todos los usuarios de la base de datos
   } catch (err) {
-    console.error('Error al leer usuarios:', err)
-    return [] // Retorna un array vacío si no hay usuarios o si ocurre un error
+    console.error('Error al obtener usuarios:', err);
+    return [];  // Retorna un array vacío si ocurre un error
   }
-}
+};
+
 
 // Función para verificar usuario
 const verificarUsuario = async ({ username, password }) => {
@@ -80,38 +79,55 @@ const registrarUsuario = async ({
 }
 
 // Editar un usuario existente
-const editarUsuario = async (id, { username, email }) => {
+
+const editarUsuario = async (id, { usernameNuevo, email }) => {
   try {
-    // Busca y actualiza el usuario por ID
+    // Verificar si 'id' es un ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error('ID no válido');
+    }
+
+    // Buscar al usuario por id en MongoDB
     const usuarioActualizado = await Usuario.findByIdAndUpdate(
-      id,
-      { username, email },
-      { new: true, runValidators: true } // Retorna el documento actualizado y valida los datos
-    )
+      id,  // Usamos el id directamente
+      { username: usernameNuevo, email },
+      { new: true, runValidators: true }  // Devuelve el documento actualizado
+    );
 
     if (!usuarioActualizado) {
-      throw new Error('Usuario no encontrado')
+      throw new Error(`No se encontró el usuario con id: ${id}`);
     }
-    return usuarioActualizado
+
+    return usuarioActualizado;
   } catch (err) {
-    throw new Error('Error al editar usuario')
+    console.error('Error al editar usuario:', err);
+    throw new Error(`Error al editar el usuario: ${err.message}`);
   }
-}
+};
+
 
 // Eliminar un usuario
 const eliminarUsuario = async (id) => {
   try {
-    // Elimina el usuario por ID
-    const usuarioEliminado = await Usuario.findByIdAndDelete(id)
-    if (!usuarioEliminado) {
-      throw new Error('Usuario no encontrado')
+    // Verificar si 'id' es un ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error('ID no válido');
     }
-    return
+
+    // Eliminar el usuario por su ObjectId
+    const usuarioEliminado = await Usuario.findByIdAndDelete(id);
+
+    if (!usuarioEliminado) {
+      throw new Error('Usuario no encontrado');
+    }
+    return;
   } catch (err) {
-    console.error('Error al eliminar usuario:', err)
-    throw new Error('Error al eliminar usuario')
+    console.error('Error al eliminar usuario:', err);
+    throw new Error('Error al eliminar usuario');
   }
-}
+};
+
+
 
 module.exports = {
   obtenerTodos,
